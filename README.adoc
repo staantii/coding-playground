@@ -1,0 +1,6 @@
+= coding-playground
+
+Personal repo for learning how to code and experimenting with different languages.
+
+02.09.2025:
+Beginning with writing an application to simulate a skat game in python.
