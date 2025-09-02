@@ -20,8 +20,8 @@ class Values(IntEnum) :
     ober = 3
     unter = 2
     nine = 0
-    eight = 0
-    seven = 0
+    eight = -1
+    seven = -2
 
 """
 A card is represented by a tuple of its color and value. For Example: card1 = (leaves, unter)
@@ -31,6 +31,14 @@ Card  =  Tuple[Colors, Values]
 class Deck:
     def __init__(self):
         self.deck = []
+        self.__fill_deck__()
+
+    def __fill_deck__(self):
+        for color in Colors:
+            for value in Values:
+                card = (color, value)
+                self.deck.append(card)
+
 
 
 deck = Deck()
