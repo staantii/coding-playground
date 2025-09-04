@@ -1,5 +1,6 @@
 from enum import IntEnum
-from typing import Tuple
+from typing import Tuple, List
+import copy
 
 """
 The four colors in skat as an enum. The integer is related to multiplying factor in skat per color
@@ -30,7 +31,7 @@ Card  =  Tuple[Colors, Values]
 
 class Deck:
     def __init__(self):
-        self.deck = []
+        self.deck : List[Card] = []
         self.__fill_deck__()
 
     def __fill_deck__(self):
@@ -39,6 +40,18 @@ class Deck:
                 card = (color, value)
                 self.deck.append(card)
 
+    def get_deck(self) -> List[Card]:
+        return copy.deepcopy(self.deck)
+
+    def print_deck(self, deck: List[Card]):
+        output_cards = "All cards:\n"
+        for card in self.deck:
+            output_cards += f"({card[0].name}, {card[1].name})" + ", "
+
+        print(output_cards)
+
+
 
 
 deck = Deck()
+deck.print_deck(deck)
