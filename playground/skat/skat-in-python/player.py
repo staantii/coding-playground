@@ -20,3 +20,11 @@ class Player:
 
     def get_skat(self, skat):
         self.cards.extend(skat)
+
+    def get_points(self):
+        points = 0
+        for card in self.cards:
+            points += card[1]
+
+        new_tuple = (self.name, points)
+        return new_tuple

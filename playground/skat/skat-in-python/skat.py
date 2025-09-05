@@ -122,7 +122,21 @@ class Skat:
         self.current_round_cards.append(new_tuple)
         return color
 
+    def calculate_winner(self, player1, player2, player3):
+        player1_points = player1.get_points()
+        player2_points = player2.get_points()
+        player3_points = player3.get_points()
 
+        winner = player1_points
+
+        if player2_points[1] < winner[1]:
+            winner = player2_points
+
+        if player3_points[1] < winner[1]:
+            winner = player3_points
+
+        print()
+        print("Congratulations " + str(winner[0]) + "! You won this game with " + str(winner[1]) + " points.")
 
     def print_hand(self, hand):
         output_hand = ""

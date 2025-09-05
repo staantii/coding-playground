@@ -4,8 +4,8 @@ from player import *
 
 # initializing everything
 deck = Deck()
-playing_rules = Skat()
-hand1, hand2, hand3, skat = playing_rules.deal_cards()
+game_rules = Skat()
+hand1, hand2, hand3, skat = game_rules.deal_cards()
 
 name1 = input("What is your name? ")
 player1 = Player(name1, hand1)
@@ -27,6 +27,8 @@ while i < 10:
         last_round = True
 
     """player_order ="""
-    playing_rules.play_round(player_order, last_round)
+    game_rules.play_round(player_order, last_round)
     i += 1
+
+game_rules.calculate_winner(player1, player2, player3)
 
