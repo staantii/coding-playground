@@ -38,6 +38,33 @@ class Skat:
         color = self.play_move(player_order[0][0], player_order[0][1])
         self.play_move(player_order[1][0], player_order[1][1], color)
         self.play_move(player_order[2][0], player_order[2][1], color)
+        winner = self.evaluate(self.current_round_cards, color)
+        winner.get_all_cards(self.current_round_cards)
+        self.current_round_cards.clear()
+
+    def evaluate(self, who_played_what, color):
+        # decides who gets all the cards
+        first_move = who_played_what[0]
+        second_move = who_played_what[1]
+        third_move = who_played_what[2]
+        trump_game = False
+
+        if first_move[1][1] == 2:
+            trump_game = True
+
+        best_move = first_move
+
+        if second_move[1][0] == color and second_move[1][1] > best_move[1][1]:
+            best_move = second_move
+
+        if third_move[1][0] == color and third_move[1][1] > best_move[1][1]:
+            best_move = third_move
+
+        print()
+        print(str(best_move[0].name) + " gets all cards from this round! They played: (" + str(best_move[1][0].name) + ", " + str(best_move[1][1].name) + ").")
+
+        return best_move[0]
+
 
     def play_move(self, player, hand, color = None):
         # simulates one move from one player
@@ -74,7 +101,11 @@ class Skat:
             else:
                 print("You have a valid card. Please play it.")
 
-        self.current_round_cards.append(card_to_play)
+        hand.remove(card_to_play)
+
+        new_tuple = (player, card_to_play)
+
+        self.current_round_cards.append(new_tuple)
         return color
 
 

@@ -18,6 +18,9 @@ player3 = Player(name3, hand3)
 
 player_order = [(player1, hand1), (player2, hand2), (player3, hand3)]
 
-# erster Spielzug
-playing_rules.play_round(player_order)
+i : int = 0
+
+while i < 10:
+    playing_rules.play_round(player_order)
+    i += 1
 
