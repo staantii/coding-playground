@@ -20,7 +20,13 @@ player_order = [(player1, hand1), (player2, hand2), (player3, hand3)]
 
 i : int = 0
 
+last_round = False
+
 while i < 10:
-    playing_rules.play_round(player_order)
+    if i == 9:
+        last_round = True
+
+    """player_order ="""
+    playing_rules.play_round(player_order, last_round)
     i += 1
 

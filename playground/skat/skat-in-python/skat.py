@@ -33,14 +33,28 @@ class Skat:
 
         return self.hand1, self.hand2, self.hand3, self.skat
 
-    def play_round(self, player_order):
-        # let the players play in the right order
-        color = self.play_move(player_order[0][0], player_order[0][1])
-        self.play_move(player_order[1][0], player_order[1][1], color)
-        self.play_move(player_order[2][0], player_order[2][1], color)
+    def play_round(self, player_order, last_round):
+        # everybody makes their move and the first one declares a color
+        color = self.player_move(player_order[0][0], player_order[0][1])
+        self.player_move(player_order[1][0], player_order[1][1], color)
+        self.player_move(player_order[2][0], player_order[2][1], color)
+
+        # the moves get evaluated and a winner is determined
         winner = self.evaluate(self.current_round_cards, color)
         winner.get_all_cards(self.current_round_cards)
         self.current_round_cards.clear()
+
+        # on the last round the winner gets the skat
+        if last_round:
+            winner.get_skat(self.skat)
+
+        # the player order for the next round is determined
+        #new_player_order = self.get_player_order(winner)
+        #return new_player_order
+
+    def get_player_order(self, winner):
+        new_player_order = []
+
 
     def evaluate(self, who_played_what, color):
         # decides who gets all the cards
@@ -66,7 +80,7 @@ class Skat:
         return best_move[0]
 
 
-    def play_move(self, player, hand, color = None):
+    def player_move(self, player, hand, color = None):
         # simulates one move from one player
 
         # first of all we check if the player has a valid card to play or if the player is the first of it's round
