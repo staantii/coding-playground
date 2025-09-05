@@ -1,31 +1,91 @@
 import random
+from symbol import continue_stmt
+
 from deck import *
+from player import *
+
+
+#player_order : List[Tuple[Player, Hand]]
 
 init_deck = Deck()
 
+# Basic rule set and order of rounds
 class Skat:
     def __init__(self):
         self.hand1 = []
         self.hand2 = []
         self.hand3 = []
         self.skat = []
+        self.current_round_cards = []
 
     def deal_cards(self):
+        # method to distribute cards among three hands and a skat
         new_deck = init_deck.get_deck()
         random.shuffle(new_deck)
-        for i in range(0,9):
+        for i in range(0,10):
             self.hand1.append(new_deck[i])
-        for i in range(10,19):
+        for i in range(10,20):
             self.hand2.append(new_deck[i])
-        for i in range(20, 29):
+        for i in range(20, 30):
             self.hand3.append(new_deck[i])
         for i in range(30, 32):
             self.skat.append(new_deck[i])
 
-        print(self.hand1)
-        print(self.hand2)
-        print(self.hand3)
-        print(self.skat)
+        return self.hand1, self.hand2, self.hand3, self.skat
+
+    def play_round(self, player_order):
+        # let the players play in the right order
+        color = self.play_move(player_order[0][0], player_order[0][1])
+        self.play_move(player_order[1][0], player_order[1][1], color)
+        self.play_move(player_order[2][0], player_order[2][1], color)
+
+    def play_move(self, player, hand, color = None):
+        # simulates one move from one player
+
+        # first of all we check if the player has a valid card to play or if the player is the first of it's round
+        has_a_valid_card = False
+        init_color = False
+
+        if color is None:
+            init_color = True
+            pass
+        else:
+            for card in hand:
+                if card[0] == color:
+                    has_a_valid_card = True
+
+        # now starting the move
+        print(str(player.name) + "s turn! You have the following cards: ")
+        self.print_hand(hand)
+
+        while True:
+            # player decides on a card and fets checked if it's a valid move
+            index = input("Enter the number of the card you would like to play: ")
+            index = int(index) - 1
+            card_to_play = hand[index]
+            print(card_to_play)
+            if has_a_valid_card and card_to_play[0] == color:
+                break
+            elif init_color:
+                color = card_to_play[0]
+                break
+            elif not has_a_valid_card and not init_color:
+                break
+            else:
+                print("You have a valid card. Please play it.")
+
+        self.current_round_cards.append(card_to_play)
+        return color
+
+
+
+    def print_hand(self, hand):
+        output_hand = ""
+        for card in hand:
+            output_hand += f"({card[0].name}, {card[1].name})" + ", "
+
+        print(output_hand)
+
 
 
 
