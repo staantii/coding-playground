@@ -31,21 +31,21 @@ Card  =  Tuple[Colors, Values]
 
 class Deck:
     def __init__(self):
-        self.deck : List[Card] = []
+        self.cards : List[Card] = []
         self.__fill_deck__()
 
     def __fill_deck__(self):
         for color in Colors:
             for value in Values:
                 card = (color, value)
-                self.deck.append(card)
+                self.cards.append(card)
 
     def get_deck(self) -> List[Card]:
-        return copy.deepcopy(self.deck)
+        return copy.deepcopy(self.cards)
 
-    def print_deck(self, deck: List[Card]):
+    def print_deck(self, current_deck: List[Card]):
         output_cards = "All cards:\n"
-        for card in self.deck:
+        for card in current_deck:
             output_cards += f"({card[0].name}, {card[1].name})" + ", "
 
         print(output_cards)
@@ -53,5 +53,5 @@ class Deck:
 
 
 
-deck = Deck()
-deck.print_deck(deck)
+new_deck = Deck()
+new_deck.print_deck(new_deck.cards)
