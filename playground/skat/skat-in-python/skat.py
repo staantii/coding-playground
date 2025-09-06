@@ -72,36 +72,42 @@ class Skat:
         first_move = who_played_what[0]
         second_move = who_played_what[1]
         third_move = who_played_what[2]
-        trump_game = False
-
-        if first_move[1][1] == 2:
-            trump_game = True
 
         best_move = first_move
 
-        if second_move[1][0] == color and second_move[1][1] > best_move[1][1]:
-            best_move = second_move
-
-        if third_move[1][0] == color and third_move[1][1] > best_move[1][1]:
-            best_move = third_move
+        best_move = self.compare_two_cards(color, best_move, second_move)
+        best_move = self.compare_two_cards(color, best_move, third_move)
 
         print()
         print(str(best_move[0].name) + " gets all cards from this round! They played: (" + str(best_move[1][0].name) + ", " + str(best_move[1][1].name) + ").")
 
         return best_move[0]
 
+    def compare_two_cards(self, color, best_move, move2):
+        if (move2[1][0] == color and move2[1][1] > best_move[1][1]) or (move2[1][1] == 2 and best_move[1][0] == 2 and move2[1][0] > best_move[1][0]):
+            best_move = move2
+
+        return best_move
+
 
     def player_move(self, player, hand, color = None):
         # simulates one move from one player
 
-        # first of all we check if the player has a valid card to play or if the player is the first of it's round
+        # first of all we check if the player has a valid card to play or if the player is the first of their round
         has_a_valid_card = False
         init_color = False
 
         if color is None:
+        # if color is none, we are the first one to play and therefor can decide on a color
             init_color = True
             pass
+        elif not color:
+        # if color is false we play a trump round and can only lay unter
+            for card in hand:
+                if card[1] == 2:
+                    has_a_valid_card = True
         else:
+        # if we're not the first ones and there is a color, all our cards with the color are valid
             for card in hand:
                 if card[0] == color:
                     has_a_valid_card = True
@@ -109,18 +115,28 @@ class Skat:
         # now starting the move
         print(str(player.name) + "s turn! You have the following cards: ")
         self.print_hand(hand)
+        print()
 
         while True:
-            # player decides on a card and fets checked if it's a valid move
+            # player decides on a card, that gets checked if it's a valid move. if not they have to try again
             index = input("Enter the number of the card you would like to play: ")
             index = int(index) - 1
             card_to_play = hand[index]
             print(card_to_play)
-            if has_a_valid_card and card_to_play[0] == color:
+
+            # checking that if we have a valid card, we also play it
+            if has_a_valid_card and (card_to_play[0] == color or card_to_play[1] == 2):
                 break
+
+            # if we are the first one to play we decide on a color or if we play a trump round
             elif init_color:
+                if card_to_play[1] == 2:
+                    color = False
+                    break
                 color = card_to_play[0]
                 break
+
+            # if we neither have a valid card nor an unter we can play whatever
             elif not has_a_valid_card and not init_color:
                 break
             else:
@@ -151,8 +167,10 @@ class Skat:
 
     def print_hand(self, hand):
         output_hand = ""
+        i = 1
         for card in hand:
-            output_hand += f"({card[0].name}, {card[1].name})" + ", "
+            output_hand += f"{i}: ({card[0].name}, {card[1].name})" + ", "
+            i += 1
 
         print(output_hand)
 
