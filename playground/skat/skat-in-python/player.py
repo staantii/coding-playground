@@ -4,6 +4,7 @@ Hand : List[Card]
 
 class Player:
     def __init__(self, name, hand):
+        # a player gets a name, has 10 hand cards, and has a stack of cards when they "win" a round
         self.name = name
         self.hand = hand
         self.cards = []
@@ -12,6 +13,7 @@ class Player:
         return f'Player {self.name}'
 
     def get_all_cards(self, cards_from_round):
+        # adding the cards that got played in the last round to the players stack of cards
         self.cards.append(cards_from_round[0][1])
         self.cards.append(cards_from_round[1][1])
         self.cards.append(cards_from_round[2][1])
@@ -21,6 +23,7 @@ class Player:
         self.cards.extend(skat)
 
     def get_points(self):
+        # adding all card values from the players stack
         points = 0
         for card in self.cards:
             if card[1] == -1 or card[1] == -2:

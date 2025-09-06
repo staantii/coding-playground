@@ -1,11 +1,6 @@
 import random
-from symbol import continue_stmt
 
-from deck import *
 from player import *
-
-
-#player_order : List[Tuple[Player, Hand]]
 
 init_deck = Deck()
 
@@ -39,7 +34,7 @@ class Skat:
         self.player_move(player_order[1][0], player_order[1][1], color)
         self.player_move(player_order[2][0], player_order[2][1], color)
 
-        # the moves get evaluated and a winner is determined
+        # the moves get evaluated and a winner (I know it's supposed to be looser but eh) is determined
         winner = self.evaluate(self.current_round_cards, color)
         winner.get_all_cards(self.current_round_cards)
         self.current_round_cards.clear()
@@ -53,13 +48,16 @@ class Skat:
         return new_player_order
 
     def get_player_order(self, winner, player_order):
+        # sets the new player order
         new_player_order = []
         index_of_winner = 0
 
+        # first we search for the index of the winner
         for i in range(0, len(player_order)):
             if player_order[i][0] == winner:
                 index_of_winner = i
 
+        # now we shift the order so the winner starts and then we go around clockwise
         new_player_order.append(player_order[index_of_winner])
         new_player_order.append(player_order[(index_of_winner+1)%3])
         new_player_order.append(player_order[(index_of_winner+2)%3])
@@ -68,13 +66,14 @@ class Skat:
 
 
     def evaluate(self, who_played_what, color):
-        # decides who gets all the cards
+        # initializing the moves
         first_move = who_played_what[0]
         second_move = who_played_what[1]
         third_move = who_played_what[2]
 
         best_move = first_move
 
+        # evaluating which move is the best
         best_move = self.compare_two_cards(color, best_move, second_move)
         best_move = self.compare_two_cards(color, best_move, third_move)
 
@@ -84,6 +83,10 @@ class Skat:
         return best_move[0]
 
     def compare_two_cards(self, color, best_move, move2):
+        # changes the best move to the second move if either
+        # they're the same color and the second move has a higher value
+        # OR both moves are trumps but the color of the second move values higher
+        # OR the second move is an unter but the first move isn't
         if (move2[1][0] == color and move2[1][1] > best_move[1][1]) \
                 or (move2[1][1] == 2 and best_move[1][0] == 2 and move2[1][0] > best_move[1][0]) \
                 or (move2[1][1] == 2 and best_move[1][1] != 2):
@@ -100,16 +103,16 @@ class Skat:
         init_color = False
 
         if color is None:
-        # if color is none, we are the first one to play and therefor can decide on a color
+        # if color is none, the player is the first one to play and therefor can decide on a color
             init_color = True
             pass
         elif not color:
-        # if color is false we play a trump round and can only lay unter
+        # if color is false, the player plays a trump round and can only lay unter
             for card in hand:
                 if card[1] == 2:
                     has_a_valid_card = True
         else:
-        # if we're not the first ones and there is a color, all our cards with the color are valid
+        # if the player's not the first one and there is a color, all our cards with the specific color are valid
             for card in hand:
                 if card[0] == color and card[1] != 2:
                     has_a_valid_card = True
@@ -120,17 +123,17 @@ class Skat:
         print()
 
         while True:
-            # player decides on a card, that gets checked if it's a valid move. if not they have to try again
+            # player decides on a card. the card gets checked if it's a valid move. if not they have to try again
             index = input("Enter the number of the card you would like to play: ")
             index = int(index) - 1
             card_to_play = hand[index]
             print(card_to_play)
 
-            # checking that if we have a valid card, we also play it
+            # checking that if the player has a valid card, they also play it
             if has_a_valid_card and (card_to_play[0] == color or card_to_play[1] == 2):
                 break
 
-            # if we are the first one to play we decide on a color or if we play a trump round
+            # if the player is the first one to play they decide on a color or if they play a trump round
             elif init_color:
                 if card_to_play[1] == 2:
                     color = False
@@ -138,7 +141,7 @@ class Skat:
                 color = card_to_play[0]
                 break
 
-            # if we neither have a valid card nor an unter we can play whatever
+            # if the player neither has a valid card nor an unter they can play whatever
             elif not has_a_valid_card and not init_color:
                 break
             else:
@@ -152,12 +155,13 @@ class Skat:
         return color
 
     def calculate_winner(self, player1, player2, player3):
+        # first of all we calculate the points of every player
         player1_points = player1.get_points()
         player2_points = player2.get_points()
         player3_points = player3.get_points()
 
         winner = player1_points
-
+        # now we compare the points to see who has the less points
         if player2_points[1] < winner[1]:
             winner = player2_points
 
