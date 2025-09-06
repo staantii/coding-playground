@@ -49,11 +49,22 @@ class Skat:
             winner.get_skat(self.skat)
 
         # the player order for the next round is determined
-        #new_player_order = self.get_player_order(winner)
-        #return new_player_order
+        new_player_order = self.get_player_order(winner, player_order)
+        return new_player_order
 
-    def get_player_order(self, winner):
+    def get_player_order(self, winner, player_order):
         new_player_order = []
+        index_of_winner = 0
+
+        for i in range(0, len(player_order)):
+            if player_order[i][0] == winner:
+                index_of_winner = i
+
+        new_player_order.append(player_order[index_of_winner])
+        new_player_order.append(player_order[(index_of_winner+1)%3])
+        new_player_order.append(player_order[(index_of_winner+2)%3])
+
+        return new_player_order
 
 
     def evaluate(self, who_played_what, color):
@@ -145,10 +156,3 @@ class Skat:
 
         print(output_hand)
 
-
-
-
-
-
-skat = Skat()
-skat.deal_cards()

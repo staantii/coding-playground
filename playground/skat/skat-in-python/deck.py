@@ -49,9 +49,3 @@ class Deck:
             output_cards += f"({card[0].name}, {card[1].name})" + ", "
 
         print(output_cards)
-
-
-
-
-new_deck = Deck()
-new_deck.print_deck(new_deck.cards)

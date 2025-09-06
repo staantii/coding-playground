@@ -26,8 +26,7 @@ while i < 10:
     if i == 9:
         last_round = True
 
-    """player_order ="""
-    game_rules.play_round(player_order, last_round)
+    player_order = game_rules.play_round(player_order, last_round)
     i += 1
 
 game_rules.calculate_winner(player1, player2, player3)
