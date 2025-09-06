@@ -84,7 +84,9 @@ class Skat:
         return best_move[0]
 
     def compare_two_cards(self, color, best_move, move2):
-        if (move2[1][0] == color and move2[1][1] > best_move[1][1]) or (move2[1][1] == 2 and best_move[1][0] == 2 and move2[1][0] > best_move[1][0]):
+        if (move2[1][0] == color and move2[1][1] > best_move[1][1]) \
+                or (move2[1][1] == 2 and best_move[1][0] == 2 and move2[1][0] > best_move[1][0]) \
+                or (move2[1][1] == 2 and best_move[1][1] != 2):
             best_move = move2
 
         return best_move
@@ -109,7 +111,7 @@ class Skat:
         else:
         # if we're not the first ones and there is a color, all our cards with the color are valid
             for card in hand:
-                if card[0] == color:
+                if card[0] == color and card[1] != 2:
                     has_a_valid_card = True
 
         # now starting the move

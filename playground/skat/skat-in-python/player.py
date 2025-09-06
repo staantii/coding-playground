@@ -16,7 +16,6 @@ class Player:
         self.cards.append(cards_from_round[1][1])
         self.cards.append(cards_from_round[2][1])
         print()
-        print(self.cards)
 
     def get_skat(self, skat):
         self.cards.extend(skat)
@@ -24,6 +23,9 @@ class Player:
     def get_points(self):
         points = 0
         for card in self.cards:
+            if card[1] == -1 or card[1] == -2:
+                points += 0
+                continue
             points += card[1]
 
         new_tuple = (self.name, points)
