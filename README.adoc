@@ -2,5 +2,5 @@
 
 Personal repo for learning how to code and experimenting with different languages.
 
-02.09.2025:
-Beginning with writing an application to simulate a skat game in python.
+02.09. to 06.09.2025:
+Writing an application to simulate a skat game in python.
